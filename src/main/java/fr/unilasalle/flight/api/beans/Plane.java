@@ -1,5 +1,9 @@
 package fr.unilasalle.flight.api.beans;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -35,7 +39,7 @@ public class Plane extends PanacheEntityBase {
     private String immatriculation;
 
     @NotNull(message="capacity must be set")
-    @Min(value="2", message="capacity has to be more than 2")
+    @Min(value=2, message="capacity has to be more than 2")
     @Column(nullable=false)
     private Integer capacity;
 }

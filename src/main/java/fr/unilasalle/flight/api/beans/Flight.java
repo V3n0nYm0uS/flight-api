@@ -1,7 +1,7 @@
 package fr.unilasalle.flight.api.beans;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
@@ -27,5 +27,24 @@ public class Flight extends PanacheEntityBase {
     @Column(nullable=false)
     private String origin;
 
+    @NotBlank(message="destination must be set")
+    @Column(nullable=false)
+    private String destination;
+
+    @NotBlank(message="departure_date must be set")
+    @Column(nullable=false)
+    private String departure_date;
+
+    @NotBlank(message="departure_time must be set")
+    @Column(nullable=false)
+    private String departure_time;
+
+    @NotBlank(message="arrival_date must be set")
+    @Column(nullable=false)
+    private String arrival_time;
+
+    @NotBlank(message="plane_id must be set")
+    @Column(nullable=false)
+    private String plane_id;
 
 }

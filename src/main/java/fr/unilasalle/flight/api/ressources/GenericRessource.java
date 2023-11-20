@@ -1,4 +1,4 @@
-package fr.unilasalle.flight.api.resources;
+package fr.unilasalle.flight.api.ressources;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.ws.rs.core.Response;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class GenericResource {
+public class GenericRessource {
 
     protected Response getOr404(Object object) {
 

@@ -3,6 +3,9 @@ package fr.unilasalle.flight.api.ressources;
 import fr.unilasalle.flight.api.beans.Plane;
 import fr.unilasalle.flight.api.repositories.PlaneRepository;
 import jakarta.inject.Inject;
+import jakarta.persistence.PersistenceException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,9 +15,9 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 
 
-public class PlaneRessource extends GenericRessource{
+public class PlaneRessource extends GenericRessource {
     @Inject
-    AcionRepository repository;
+    PlaneRepository repository;
 
     @Inject
     Validator validator;
@@ -26,18 +29,18 @@ public class PlaneRessource extends GenericRessource{
         return getOr404(list);
     }
 
-    @Post
+    @POST
     @Transactional
     public Response createPlane(Plane plane){
         var violations = validator.validate(plane);
 
         if(!violations.isEmpty()){
             return Response.status(400).entity(
-                    new ErrorWrapper(violations)).build();
+                    new GenericRessource.ErrorWrapper(violations)).build();
         }
 
         try{
-            repository.persisteAndFlush(plane);
+            repository.persistAndFlush(plane);
             return Response.ok().status(201).build();
         } catch (PersistenceException e){
             return Response.serverError().entity(
