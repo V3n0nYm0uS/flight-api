@@ -1,18 +1,18 @@
 package fr.unilasalle.flight.api.ressources;
 
-import fr.unilasalle.flight.api.beans.Avion;
-import fr.unilasalle.flight.api.repositories.AvionRepository;
+import fr.unilasalle.flight.api.beans.Plane;
+import fr.unilasalle.flight.api.repositories.PlaneRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/Avions")
+@Path("/Plane")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
 
-public class AvionRessource extends GenericRessource{
+public class PlaneRessource extends GenericRessource{
     @Inject
     AcionRepository repository;
 
@@ -28,8 +28,8 @@ public class AvionRessource extends GenericRessource{
 
     @Post
     @Transactional
-    public Response createPlace(Avion avion){
-        var violations = validator.validate(avion);
+    public Response createPlane(Plane plane){
+        var violations = validator.validate(plane);
 
         if(!violations.isEmpty()){
             return Response.status(400).entity(
@@ -37,11 +37,11 @@ public class AvionRessource extends GenericRessource{
         }
 
         try{
-            repository.persisteAndFlush(avion);
+            repository.persisteAndFlush(plane);
             return Response.ok().status(201).build();
         } catch (PersistenceException e){
             return Response.serverError().entity(
-                    new ErrorWrapper("Erreur lors de la création"))
+                    new ErrorWrapper("Error while creating the plane"))
                     .build();
         }
     }
