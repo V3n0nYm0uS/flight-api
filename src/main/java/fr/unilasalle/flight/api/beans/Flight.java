@@ -6,6 +6,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 
+import java.sql.Date;
+import java.sql.Time;
+
 @Entity
 @Table(name="flights")
 
