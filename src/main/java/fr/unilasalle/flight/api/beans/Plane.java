@@ -35,7 +35,7 @@ public class Plane extends PanacheEntityBase {
 
     @NotBlank(message="immatriculation must be set")
     @Size(max=6, message = "immatriculation must be 6 less lenght")
-    @Column(nullable=false)
+    @Column(nullable=false, unique=true)
     private String immatriculation;
 
     @NotNull(message="capacity must be set")

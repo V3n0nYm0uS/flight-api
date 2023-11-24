@@ -27,7 +27,7 @@ public class Flight extends PanacheEntityBase {
     private Long id;
 
     @NotBlank(message="Number must be set")
-    @Column(nullable=false)
+    @Column(nullable=false, unique = true)
     private String number;
 
     @NotBlank(message="Origin must be set")

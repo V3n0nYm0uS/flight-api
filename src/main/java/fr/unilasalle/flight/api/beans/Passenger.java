@@ -30,6 +30,6 @@ public class Passenger extends PanacheEntityBase{
     private String firstname;
 
     @NotBlank(message = "email must be set")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email_address;
 }
