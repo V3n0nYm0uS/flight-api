@@ -56,8 +56,8 @@ public class Flight extends PanacheEntityBase {
     @Column(nullable=false)
     private LocalTime arrival_time;
 
-    @NotNull(message="plane_id must be set")
-    @Column(nullable=false)
-    private Integer plane_id;
+    @ManyToOne
+    @JoinColumn(name="plane_id", nullable=false) // Spécifier la colonne de clé étrangère
+    private Plane plane;
 
 }

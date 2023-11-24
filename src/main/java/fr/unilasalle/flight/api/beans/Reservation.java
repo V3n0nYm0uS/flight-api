@@ -21,11 +21,11 @@ public class Reservation extends PanacheEntityBase {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="reservations_sequence_in_database")
     private Long id;
 
-    @NotNull(message="flight_id must be set")
-    @Column(nullable = false)
-    private Integer flight_id;
+    @ManyToOne
+    @JoinColumn(name="flight_id", nullable=false) // Spécifier la colonne de clé étrangère
+    private Flight flight;
 
-    @NotNull(message = "passenger_id must be set")
-    @Column(nullable = false)
-    private Integer passenger_id;
+    @ManyToOne
+    @JoinColumn(name="passenger_id", nullable=false) // Spécifier la colonne de clé étrangère
+    private Passenger passenger;
 }
