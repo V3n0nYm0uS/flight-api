@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name="flights")
@@ -36,18 +38,22 @@ public class Flight extends PanacheEntityBase {
 
     @NotBlank(message="departure_date must be set")
     @Column(nullable=false)
-    private String departure_date;
+    private LocalDate departure_date;
 
     @NotBlank(message="departure_time must be set")
     @Column(nullable=false)
-    private String departure_time;
+    private LocalTime departure_time;
 
     @NotBlank(message="arrival_date must be set")
-    @Column(nullable=false)
-    private String arrival_time;
+    @Column(nullable = false)
+    private LocalDate arrival_date;
 
-    @NotBlank(message="plane_id must be set")
+    @NotBlank(message="arrival_time must be set")
     @Column(nullable=false)
-    private String plane_id;
+    private LocalTime arrival_time;
+
+    @ManyToOne
+    @JoinColumn(name="plane_id", nullable=false)
+    private Plane plane;
 
 }
