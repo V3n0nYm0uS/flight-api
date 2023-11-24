@@ -48,4 +48,20 @@ public class PlaneRessource extends GenericRessource {
                     .build();
         }
     }
+
+    @DELETE
+    @Path("/{plane_id}")
+    public Response deletePlaneById(Long plane_id){
+        try {
+
+            var deleted = repository.deleteById(plane_id);
+            if (deleted) {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
 }

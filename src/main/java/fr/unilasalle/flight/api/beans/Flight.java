@@ -21,9 +21,9 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class Flight extends PanacheEntityBase {
     @Id
-    @SequenceGenerator(name="flight_sequence_in_java_code",
-            sequenceName="planes_sequence_in_database", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="planes_sequence_in_database")
+    @SequenceGenerator(name="flights_sequence_in_java_code",
+            sequenceName="flights_sequence_in_database", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="flights_sequence_in_database")
     private Long id;
 
     @NotBlank(message="Number must be set")
@@ -38,7 +38,7 @@ public class Flight extends PanacheEntityBase {
     @Column(nullable=false)
     private String destination;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message="departure_date must be set")
     @Column(nullable=false)
     private LocalDate departure_date;
@@ -47,7 +47,7 @@ public class Flight extends PanacheEntityBase {
     @Column(nullable=false)
     private LocalTime departure_time;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message="arrival_date must be set")
     @Column(nullable = false)
     private LocalDate arrival_date;
