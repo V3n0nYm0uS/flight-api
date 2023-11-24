@@ -1,6 +1,8 @@
 package fr.unilasalle.flight.api.beans;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
@@ -36,24 +38,26 @@ public class Flight extends PanacheEntityBase {
     @Column(nullable=false)
     private String destination;
 
-    @NotBlank(message="departure_date must be set")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message="departure_date must be set")
     @Column(nullable=false)
     private LocalDate departure_date;
 
-    @NotBlank(message="departure_time must be set")
+    @NotNull(message="departure_time must be set")
     @Column(nullable=false)
     private LocalTime departure_time;
 
-    @NotBlank(message="arrival_date must be set")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message="arrival_date must be set")
     @Column(nullable = false)
     private LocalDate arrival_date;
 
-    @NotBlank(message="arrival_time must be set")
+    @NotNull(message="arrival_time must be set")
     @Column(nullable=false)
     private LocalTime arrival_time;
 
-    @ManyToOne
-    @JoinColumn(name="plane_id", nullable=false)
-    private Plane plane;
+    @NotNull(message="plane_id must be set")
+    @Column(nullable=false)
+    private Integer plane_id;
 
 }
