@@ -51,6 +51,13 @@ public class PassengerRessource extends GenericRessource{
     }
 
     @Path("/{passenger_id}")
+    @GET
+    public Response getPassengerById(@PathParam("passenger_id") Long passenger_id){
+        var passenger = repository.findById(passenger_id);
+        return getOr404(passenger);
+    }
+
+    @Path("/{passenger_id}")
     @DELETE
     @Transactional
     public Response deletePassengerById(@PathParam("passenger_id") Long passenger_id){
