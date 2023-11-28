@@ -5,6 +5,7 @@ import fr.unilasalle.flight.api.repositories.PlaneRepository;
 import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -49,11 +50,18 @@ public class PlaneRessource extends GenericRessource {
         }
     }
 
-    @DELETE
     @Path("/{plane_id}")
-    public Response deletePlaneById(Long plane_id){
-        try {
+    @GET
+    public Response getPlaneById(@PathParam("plane_id") Long plane_id){
+        var plane = repository.findById(plane_id);
+        return getOr404(plane);
+    }
 
+    @Path("/{plane_id}")
+    @DELETE
+    @Transactional
+    public Response deletePlaneById(@PathParam("plane_id") Long plane_id){
+        try {
             var deleted = repository.deleteById(plane_id);
             if (deleted) {
                 return Response.status(Response.Status.NO_CONTENT).build();
@@ -63,5 +71,27 @@ public class PlaneRessource extends GenericRessource {
         } catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
+    }
+
+    @Path("/{plane_id}")
+    @PUT
+    @Transactional
+    public Response updatePlaneById(@PathParam("plane_id") Long plane_id, @Valid Plane request){
+        var plane = repository.findById(plane_id);
+        if (plane == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        // Verification des contraintes
+        var violations = validator.validate(request);
+        if (!violations.isEmpty()){
+            return Response.status(400).entity(
+                    new GenericRessource.ErrorWrapper(violations)).build();
+        }
+        // MAJ de l'objet
+        plane.setCapacity(request.getCapacity());
+        plane.setImmatriculation(request.getImmatriculation());
+        plane.setModel(request.getModel());
+        plane.setOperator(request.getOperator());
+        return Response.ok(plane).build();
     }
 }
