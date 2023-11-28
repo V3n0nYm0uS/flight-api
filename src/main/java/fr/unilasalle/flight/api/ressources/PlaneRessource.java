@@ -53,8 +53,12 @@ public class PlaneRessource extends GenericRessource {
     @Path("/{plane_id}")
     @GET
     public Response getPlaneById(@PathParam("plane_id") Long plane_id){
-        var plane = repository.findById(plane_id);
-        return getOr404(plane);
+        try {
+            var plane = repository.findById(plane_id);
+            return getOr404(plane);
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @Path("/{plane_id}")

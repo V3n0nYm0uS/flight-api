@@ -53,8 +53,12 @@ public class PassengerRessource extends GenericRessource{
     @Path("/{passenger_id}")
     @GET
     public Response getPassengerById(@PathParam("passenger_id") Long passenger_id){
-        var passenger = repository.findById(passenger_id);
-        return getOr404(passenger);
+        try{
+            var passenger = repository.findById(passenger_id);
+            return getOr404(passenger);
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @Path("/{passenger_id}")
