@@ -8,5 +8,5 @@ import java.util.List;
 
 @Model
 public class FlightRepository implements PanacheRepositoryBase<Flight,Long> {
-    public List<Flight> findByOperator(String operatorParameter) { return find("operator", operatorParameter).list();}
+
 }

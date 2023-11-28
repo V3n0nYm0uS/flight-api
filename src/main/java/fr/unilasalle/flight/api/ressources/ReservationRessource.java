@@ -40,7 +40,7 @@ public class ReservationRessource extends GenericRessource{
 
         try{
             repository.persistAndFlush(reservation);
-            return Response.ok().status(201).build();
+            return Response.ok(reservation).status(201).build();
         } catch (PersistenceException e){
             return Response.serverError().entity(
                     new ErrorWrapper("Error while creating the reservation"))

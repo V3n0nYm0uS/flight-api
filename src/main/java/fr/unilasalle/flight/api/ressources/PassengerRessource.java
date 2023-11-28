@@ -42,7 +42,7 @@ public class PassengerRessource extends GenericRessource{
 
         try{
             repository.persistAndFlush(passenger);
-            return Response.ok().status(201).build();
+            return Response.ok(passenger).status(201).build();
         } catch (PersistenceException e){
             return Response.serverError().entity(
                     new ErrorWrapper("Error while creating the passenger"))

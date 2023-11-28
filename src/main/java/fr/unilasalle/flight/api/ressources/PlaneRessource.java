@@ -10,6 +10,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
 
 @Path("/Plane")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,9 +26,11 @@ public class PlaneRessource extends GenericRessource {
 
 
     @GET
-    public Response getPlanes(){
-        var list=repository.listAll();
-        return getOr404(list);
+    public Response getPlanes(@QueryParam("operator") String operator) {
+        if (StringUtils.isNotBlank(operator)) {
+            return getOr404(repository.findByOperator(operator));
+        }
+        return getOr404(repository.listAll());
     }
 
     @POST

@@ -1,6 +1,5 @@
 package fr.unilasalle.flight.api.ressources;
 
-
 import fr.unilasalle.flight.api.beans.Flight;
 import fr.unilasalle.flight.api.repositories.FlightRepository;
 import jakarta.inject.Inject;
@@ -11,6 +10,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
 
 @Path("/Flight")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,8 +26,8 @@ public class FlightRessource extends GenericRessource{
 
     @GET
     public Response getFlights(){
-        var list = repository.listAll();
-        return getOr404(list);
+        return getOr404(repository.listAll());
+
     }
 
     @POST
@@ -42,7 +42,7 @@ public class FlightRessource extends GenericRessource{
 
         try{
             repository.persistAndFlush(flight);
-            return Response.ok().status(201).build();
+            return Response.ok(flight).status(201).build();
         } catch (PersistenceException e){
             return Response.serverError().entity(
                     new ErrorWrapper("Error while creating the flight"))
