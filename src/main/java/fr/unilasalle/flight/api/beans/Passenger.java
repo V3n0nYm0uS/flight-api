@@ -1,5 +1,6 @@
 package fr.unilasalle.flight.api.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -36,5 +37,6 @@ public class Passenger extends PanacheEntityBase{
     private String email_address;
 
     @OneToMany(mappedBy="passenger", cascade=CascadeType.ALL, orphanRemoval=true)
+    @JsonIgnore
     private List<Reservation> reservations;
 }

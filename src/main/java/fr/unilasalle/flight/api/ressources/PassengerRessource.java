@@ -35,18 +35,15 @@ public class PassengerRessource extends GenericRessource{
     public Response createPassenger(Passenger passenger){
         var violations = validator.validate(passenger);
         if(!violations.isEmpty()){
-            return Response.status(400).entity(
+            return Response.status(500).entity(
                     new GenericRessource.ErrorWrapper(violations)).build();
-
         }
 
         try{
             repository.persistAndFlush(passenger);
             return Response.ok(passenger).status(201).build();
         } catch (PersistenceException e){
-            return Response.serverError().entity(
-                    new ErrorWrapper("Error while creating the passenger"))
-                    .build();
+            return Response.status(409).entity(e.getMessage()).build();
         }
     }
 
@@ -83,18 +80,22 @@ public class PassengerRessource extends GenericRessource{
     public Response updatePassengerById(@PathParam("passenger_id") Long passenger_id, @Valid Passenger request){
         var passenger = repository.findById(passenger_id);
         if (passenger == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(404).build();
         }
         // Vérification des contraintes
         var violations = validator.validate(request);
         if (!violations.isEmpty()){
-            return Response.status(400).entity(
-                    new GenericRessource.ErrorWrapper(violations)).build();
+            return Response.status(500).entity(violations).build();
         }
         // MAJ DE L'objet
-        passenger.setFirstname(request.getFirstname());
-        passenger.setSurname(request.getSurname());
-        passenger.setEmail_address(request.getEmail_address());
-        return Response.ok(passenger).build();
+        try {
+            passenger.setFirstname(request.getFirstname());
+            passenger.setSurname(request.getSurname());
+            passenger.setEmail_address(request.getEmail_address());
+            passenger.persistAndFlush();
+            return Response.ok(passenger).build();
+        } catch (Exception e) {
+            return Response.status(409).entity(e.getMessage()).build();
+        }
     }
 }

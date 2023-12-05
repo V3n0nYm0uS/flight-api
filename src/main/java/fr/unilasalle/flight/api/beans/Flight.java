@@ -1,6 +1,7 @@
 package fr.unilasalle.flight.api.beans;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -63,6 +64,7 @@ public class Flight extends PanacheEntityBase {
     private Plane plane;
 
     @OneToMany(mappedBy="flight", cascade=CascadeType.ALL, orphanRemoval=true)
+    @JsonIgnore
     private List<Reservation> reservations;
 
 }
