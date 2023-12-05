@@ -8,5 +8,5 @@ import java.util.List;
 
 @Model
 public class FlightRepository implements PanacheRepositoryBase<Flight,Long> {
-
+    public List<Flight> findByDestination(String destinationParameter) { return find("destination", destinationParameter).list();}
 }

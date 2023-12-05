@@ -13,6 +13,8 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import java.util.List;
+
 @Entity
 @Table(name="flights")
 
@@ -59,5 +61,8 @@ public class Flight extends PanacheEntityBase {
     @ManyToOne
     @JoinColumn(name="plane_id", nullable=false) // Spécifier la colonne de clé étrangère
     private Plane plane;
+
+    @OneToMany(mappedBy="flight", cascade=CascadeType.ALL, orphanRemoval=true)
+    private List<Reservation> reservations;
 
 }

@@ -11,6 +11,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import fr.unilasalle.flight.api.repositories.ReservationRepository;
+
 
 @Path("/Flight")
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,10 +24,16 @@ public class FlightRessource extends GenericRessource{
     FlightRepository repository;
 
     @Inject
+    ReservationRepository reservationRepository;
+
+    @Inject
     Validator validator;
 
     @GET
-    public Response getFlights(){
+    public Response getFlights(@QueryParam("destination") String destination){
+        if (StringUtils.isNotBlank(destination)){
+            return getOr404(repository.findByDestination(destination));
+        }
         return getOr404(repository.listAll());
 
     }

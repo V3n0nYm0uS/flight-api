@@ -2,6 +2,7 @@ package fr.unilasalle.flight.api.ressources;
 
 
 import fr.unilasalle.flight.api.beans.Reservation;
+import fr.unilasalle.flight.api.repositories.PassengerRepository;
 import fr.unilasalle.flight.api.repositories.ReservationRepository;
 import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceException;
@@ -18,6 +19,9 @@ import jakarta.ws.rs.core.Response;
 public class ReservationRessource extends GenericRessource{
     @Inject
     ReservationRepository repository;
+
+    @Inject
+    PassengerRepository passengerRepository;
 
     @Inject
     Validator validator;
@@ -38,6 +42,25 @@ public class ReservationRessource extends GenericRessource{
                     new GenericRessource.ErrorWrapper(violations)).build();
         }
 
+        var plane_capacity = reservation.getFlight().getPlane().getCapacity();
+        var reservations = repository.findByFlightId(reservation.getFlight().getId()).size();
+        if(plane_capacity <= reservations){
+            return Response.serverError().entity(
+                    new ErrorWrapper("Error while creating the new reservation, there is not space anymore")
+                    ).build();
+        }
+
+        var passenger = reservation.getPassenger();
+        var passengers = passengerRepository.findByPassenger(passenger);
+        if (passengers.isEmpty()){
+            try {
+                passengerRepository.persistAndFlush(passenger);
+            } catch (PersistenceException e){
+                return Response.serverError().entity(
+                        new ErrorWrapper("Error while creating the new passenger")
+                ).build();
+            }
+        }
         try{
             repository.persistAndFlush(reservation);
             return Response.ok(reservation).status(201).build();

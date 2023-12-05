@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Entity
 @Table(name="passengers")
@@ -32,4 +34,7 @@ public class Passenger extends PanacheEntityBase{
     @NotBlank(message = "email must be set")
     @Column(nullable = false, unique = true)
     private String email_address;
+
+    @OneToMany(mappedBy="passenger", cascade=CascadeType.ALL, orphanRemoval=true)
+    private List<Reservation> reservations;
 }
