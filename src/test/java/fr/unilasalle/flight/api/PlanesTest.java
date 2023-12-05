@@ -64,7 +64,7 @@ public class PlanesTest {
                 .when().get("/Plane/{plane_id}")
                 .then()
                 .statusCode(200)
-                .body("id", is(plane.getId()))
+                .body("id", is(plane.getId().intValue()))
                 .body("operator", is(plane.getOperator()))
                 .body("model", is(plane.getModel()))
                 .body("immatriculation", is(plane.getImmatriculation()))
